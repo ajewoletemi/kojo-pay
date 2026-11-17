@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KOJO PAY - Login</title>
+<style>
+  :root{ --black:#0B0B0B; --white:#FFFFFF; --gold:#C9A227; --gold-light:#F5E9B8; --grey:#F4F4F2; --text-grey:#6B6B6B; }
+  *{box-sizing:border-box}
+  body{font-family:Inter,Arial,sans-serif;background:var(--black);margin:0;color:var(--black);display:flex;justify-content:center;min-height:100vh}
+  .wrap{width:100%;max-width:420px;background:var(--white);padding:28px 24px;display:flex;flex-direction:column}
+  .logo{text-align:center;margin-top:20px}
+  .logo b{font-size:32px;letter-spacing:1px}
+  .logo b span{color:var(--gold)}
+  .logo p{font-size:13px;color:var(--text-grey);margin:6px 0 0}
+  .gold-line{height:3px;background:var(--gold);width:60px;margin:16px auto;border-radius:99px}
+  .demo{background:var(--gold);color:var(--black);text-align:center;padding:9px;font-size:12px;font-weight:800;border-radius:10px;margin:16px 0}
+  label{font-size:13px;font-weight:700;margin:14px 0 6px;display:block}
+  input{width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;font-size:15px;outline:none}
+  input:focus{border-color:var(--gold)}
+  .btn{width:100%;border:0;padding:15px;border-radius:999px;font-weight:800;font-size:15px;cursor:pointer;margin-top:20px}
+  .btn-gold{background:var(--gold);color:var(--black)}
+  .btn-black{background:var(--black);color:var(--white);margin-top:10px}
+  .row{display:flex;justify-content:space-between;font-size:12px;margin-top:12px;color:var(--text-grey)}
+  .row a{color:var(--black);font-weight:700;text-decoration:none}
+  .footer{margin-top:auto;text-align:center;font-size:11px;color:var(--text-grey);line-height:1.6;padding-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <b>KOJO <span>PAY</span></b>
+    <p>One App. One Wallet. Kojo Pay.</p>
+    <div class="gold-line"></div>
+  </div>
+
+  <div class="demo">DEMO — Flutterwave Sandbox — No Real Money</div>
+
+  <label>Phone Number / Email</label>
+  <input type="text" id="loginEmail" placeholder="e.g. 0803 123 4567 or you@email.com">
+
+  <label>Password</label>
+  <input type="password" id="loginPass" placeholder="Enter password">
+
+  <div class="row"><span>Remember me</span><a href="#">Forgot Password?</a></div>
+
+  <button class="btn btn-gold" onclick="login()">Log In</button>
+  <button class="btn btn-black" onclick="goSignup()">Create Account</button>
+
+  <div class="footer">
+    KOJO PAY is a financial technology company, not a bank.<br>
+    Banking services provided by [Your Partner Bank], licensed by CBN.<br>
+    © 2026 KOJO PAY
+  </div>
+</div>
+
+<script>
+function login(){
+  // Demo only - In production, verify via YOUR backend, not frontend
+  const email = document.getElementById('loginEmail').value;
+  if(!email){ alert('Enter email / phone'); return; }
+  localStorage.setItem('kojo_user', email);
+  window.location.href = 'dashboard.html';
+}
+function goSignup(){ alert('Sign Up - Connect to your backend / Flutterwave KYC flow'); }
+</script>
+</body>
+</html>
