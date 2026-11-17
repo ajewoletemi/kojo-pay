@@ -1,0 +1,42 @@
+services:
+    - type: web
+    name: kojopay-frontend
+    env: static
+    buildCommand: echo "KOJO PAY Frontend - No Build Needed"
+    staticPublishPath: ./
+    routes:
+            - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+            - key: NODE_ENV
+        value: production
+            - key: KOJO_APP_NAME
+        value: KOJO PAY
+            - key: KOJO_FRONTEND_URL
+        value: https://kojopay-frontend.onrender.com
+
+    - type: web
+    name: kojopay-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    autoDeploy: true
+    envVars:
+            - key: NODE_ENV
+        value: production
+            - key: PORT
+        value: 10000
+            - key: KOJO_APP_NAME
+        value: KOJO PAY
+            - key: KOJO_FRONTEND_URL
+        value: https://kojopay-frontend.onrender.com
+            - key: FLW_PUBLIC_KEY
+        sync: false
+            - key: FLW_SECRET_KEY
+        sync: false
+            - key: FLW_ENCRYPTION_KEY
+        sync: false
+            - key: KOJO_WEBHOOK_SECRET
+        sync: false
