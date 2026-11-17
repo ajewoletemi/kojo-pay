@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KOJO PAY - Dashboard</title>
+<style>
+  :root{ --black:#0B0B0B; --white:#FFFFFF; --gold:#C9A227; --gold-light:#F5E9B8; --grey:#F4F4F2; --text-grey:#6B6B6B; }
+  *{box-sizing:border-box}
+  body{font-family:Inter,Arial,sans-serif;background:var(--grey);margin:0;color:var(--black)}
+  .topbar{background:var(--black);color:var(--white);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold)}
+  .topbar b{font-size:20px;letter-spacing:.5px}
+  .topbar b span{color:var(--gold)}
+  .topbar .user{font-size:13px;text-align:right}
+  .demo{background:var(--gold);color:var(--black);text-align:center;padding:8px;font-size:12px;font-weight:800}
+  .wrap{max-width:480px;margin:0 auto;padding:16px}
+  .wallet-card{background:var(--black);color:var(--white);border-radius:24px;padding:24px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+  .wallet-card::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle, rgba(201,162,39,.5), transparent 70%);border-radius:50%}
+  .wallet-label{font-size:12px;opacity:.7;letter-spacing:1px}
+  .balance{font-size:38px;font-weight:900;margin:8px 0 2px}
+  .balance span{color:var(--gold)}
+  .acct{font-size:13px;opacity:.8}
+  .actions{display:flex;gap:12px;margin-top:20px;position:relative;z-index:1}
+  .btn{flex:1;border:0;padding:14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:14px}
+  .btn-gold{background:var(--gold);color:var(--black)}
+  .btn-white{background:var(--white);color:var(--black)}
+  .btn-outline{background:transparent;color:var(--white);border:1px solid #333}
+  .quick-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:16px 0}
+  .quick{background:var(--white);border-radius:16px;padding:14px 6px;text-align:center;font-size:12px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.04);cursor:pointer}
+  .quick div{font-size:20px;margin-bottom:6px}
+  .quick small{display:block;color:var(--text-grey);font-weight:500;margin-top:2px}
+  .card{background:var(--white);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .card h3{margin:0 0 12px;font-size:16px;display:flex;justify-content:space-between}
+  .card h3 a{color:var(--gold);font-size:13px;text-decoration:none}
+  .txn{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+  .txn:last-child{border:0}
+  .txn b{font-size:14px}
+  .txn span{font-size:12px;color:var(--text-grey)}
+  .amt-plus{color:#0B8A4A;font-weight:800}
+  .amt-minus{color:var(--black);font-weight:800}
+  .badge{background:var(--gold-light);color:#7A6100;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800}
+  .footer{text-align:center;font-size:11px;color:var(--text-grey);padding:12px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="demo">DEMO — Connected to Flutterwave Sandbox — No Real Money</div>
+<div class="topbar">
+  <b>KOJO <span>PAY</span></b>
+  <div class="user">Hi, User 👋<br><small style="opacity:.6">Verify Identity</small></div>
+</div>
+<div class="wrap">
+  <div class="wallet-card">
+    <div class="wallet-label">TOTAL BALANCE • NGN WALLET</div>
+    <div class="balance">₦ <span id="balance">0.00</span></div>
+    <div class="acct">KOJO PAY • Account •••• 3455</div>
+    <div class="actions">
+      <button class="btn btn-gold" onclick="depositWithFlutterwave()">+ Deposit</button>
+      <button class="btn btn-white" onclick="openSend()">Send</button>
+      <button class="btn btn-outline" onclick="loadDashboard()">↻</button>
+    </div>
+  </div>
+
+  <div class="quick-grid">
+    <div class="quick" onclick="openSend()"><div>↗</div>Send<small>To Bank</small></div>
+    <div class="quick" onclick="depositWithFlutterwave()"><div>↓</div>Deposit<small>Fund Wallet</small></div>
+    <div class="quick" onclick="alert('Airtime - via Flutterwave Bill Payment API')"><div>📱</div>Airtime<small>Buy Airtime</small></div>
+    <div class="quick" onclick="alert('More services via Flutterwave')"><div>•••</div>More<small>Services</small></div>
+  </div>
+
+  <div class="card">
+    <h3>Account History <a href="#">See all</a></h3>
+    <div id="history">Loading...</div>
+  </div>
+
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+    <div><b>Invite & Earn</b><br><span style="font-size:12px;color:#6B6B6B">Share your code: KOJO123</span></div>
+    <span class="badge">GOLD MEMBER</span>
+  </div>
+
+  <div class="footer">
+    KOJO PAY is a financial technology company, not a bank.<br>
+    Banking services provided by [Your Partner Bank], licensed by CBN.<br>
+    © 2026 KOJO PAY
+  </div>
+</div>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
