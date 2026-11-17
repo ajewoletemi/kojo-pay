@@ -40,6 +40,14 @@
   .amt-minus{color:var(--black);font-weight:800}
   .badge{background:var(--gold-light);color:#7A6100;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800}
   .footer{text-align:center;font-size:11px;color:var(--text-grey);padding:12px;line-height:1.5}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;display:none;align-items:flex-end;justify-content:center}
+  .modal-box{background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow:auto}
+  .modal-box input,.modal-box select{width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;margin:6px 0 12px;font-size:15px}
+  .modal-box label{font-size:13px;font-weight:700}
+  .m-btn{width:100%;border:0;padding:15px;border-radius:999px;font-weight:800;cursor:pointer;margin-top:6px}
+  .m-gold{background:#C9A227;color:#000}
+  .m-black{background:#000;color:#fff}
+  .m-grey{background:#eee;color:#000}
 </style>
 </head>
 <body>
@@ -51,25 +59,79 @@
     <div class="balance">₦ <span id="balance">0.00</span></div>
     <div class="acct">KOJO PAY • Account •••• 3455</div>
     <div class="actions">
-      <button class="btn btn-gold" onclick="depositWithFlutterwave()">+ Deposit</button>
-      <button class="btn btn-white" onclick="openSend()">Send</button>
+      <button class="btn btn-gold" onclick="openTab('deposit')">+ Deposit</button>
+      <button class="btn btn-white" onclick="openTab('send')">Send</button>
       <button class="btn btn-outline" onclick="loadDashboard()">↻</button>
     </div>
   </div>
   <div class="quick-grid">
-    <div class="quick" onclick="openSend()"><div>↗</div>Send<small>To Bank</small></div>
-    <div class="quick" onclick="depositWithFlutterwave()"><div>↓</div>Deposit<small>Fund Wallet</small></div>
-    <div class="quick" onclick="alert('Airtime - via Flutterwave Bill Payment API')"><div>📱</div>Airtime<small>Buy Airtime</small></div>
-    <div class="quick" onclick="alert('More services via Flutterwave')"><div>•••</div>More<small>Services</small></div>
+    <div class="quick" onclick="openTab('send')"><div>↗</div>Send<small>To Bank</small></div>
+    <div class="quick" onclick="openTab('deposit')"><div>↓</div>Deposit<small>Fund Wallet</small></div>
+    <div class="quick" onclick="openTab('airtime')"><div>📱</div>Airtime<small>Buy Airtime</small></div>
+    <div class="quick" onclick="openTab('more')"><div>•••</div>More<small>Services</small></div>
   </div>
-  <div class="card"><h3>Account History <a href="#">See all</a></h3><div id="history">Loading...</div></div>
+  <div class="card"><h3>Account History <a href="#" onclick="openTab('more');return false;">See all</a></h3><div id="history">Loading...</div></div>
   <div class="card" style="display:flex;justify-content:space-between;align-items:center">
     <div><b>Invite & Earn</b><br><span style="font-size:12px;color:#6B6B6B">Share your code: KOJO123</span></div>
     <span class="badge">GOLD MEMBER</span>
   </div>
   <div class="footer">KOJO PAY is a financial technology company, not a bank.<br>Banking services provided by [Your Partner Bank], licensed by CBN.<br>© 2026 KOJO PAY</div>
 </div>
+
+<!-- SEND MODAL -->
+<div id="modal-send" class="modal"><div class="modal-box">
+  <h3>Send Money</h3>
+  <label>Amount (NGN)</label><input id="send-amount" type="number" placeholder="5000">
+  <label>Account Number</label><input id="send-account" placeholder="0123456789">
+  <label>Bank</label>
+  <select id="send-bank">
+    <option value="044">Access Bank - 044</option>
+    <option value="058">GTBank - 058</option>
+    <option value="011">First Bank - 011</option>
+    <option value="033">UBA - 033</option>
+    <option value="057">Zenith - 057</option>
+    <option value="232">Sterling - 232</option>
+    <option value="035">Wema - 035</option>
+    <option value="221">Stanbic IBTC - 221</option>
+    <option value="063">Access Diamond - 063</option>
+    <option value="044">Access - 044</option>
+  </select>
+  <button class="m-btn m-gold" onclick="doSend()">Send Now</button>
+  <button class="m-btn m-grey" onclick="closeAll()">Cancel</button>
+</div></div>
+
+<!-- DEPOSIT MODAL -->
+<div id="modal-deposit" class="modal"><div class="modal-box">
+  <h3>Fund Wallet - KOJO PAY</h3>
+  <label>Amount (NGN)</label><input id="deposit-amount" type="number" value="5000">
+  <p id="deposit-error" style="color:red;font-size:12px"></p>
+  <button class="m-btn m-gold" onclick="doDeposit()">Continue to Flutterwave</button>
+  <button class="m-btn m-grey" onclick="closeAll()">Cancel</button>
+  <p style="font-size:11px;color:#888;text-align:center">You will pay securely via Flutterwave - Card, Bank Transfer or USSD</p>
+</div></div>
+
+<!-- AIRTIME MODAL -->
+<div id="modal-airtime" class="modal"><div class="modal-box">
+  <h3>Buy Airtime</h3>
+  <label>Phone Number</label><input id="airtime-phone" placeholder="0803 123 4567">
+  <label>Network</label><select id="airtime-network"><option>MTN</option><option>Glo</option><option>Airtel</option><option>9mobile</option></select>
+  <label>Amount (NGN)</label><input id="airtime-amount" type="number" value="1000">
+  <button class="m-btn m-black" onclick="doAirtime()">Buy Airtime</button>
+  <button class="m-btn m-grey" onclick="closeAll()">Cancel</button>
+</div></div>
+
+<!-- MORE MODAL -->
+<div id="modal-more" class="modal"><div class="modal-box">
+  <h3>More Services</h3>
+  <button class="m-btn" style="background:#fff;border:1px solid #eee;text-align:left" onclick="openTab('send')">↗ Send Money</button>
+  <button class="m-btn" style="background:#fff;border:1px solid #eee;text-align:left" onclick="openTab('deposit')">↓ Fund Wallet</button>
+  <button class="m-btn" style="background:#fff;border:1px solid #eee;text-align:left" onclick="openTab('airtime')">📱 Buy Airtime</button>
+  <button class="m-btn" style="background:#fff;border:1px solid #eee;text-align:left" onclick="alert('Data Bundle - Coming Soon in KOJO PAY')">📶 Buy Data</button>
+  <button class="m-btn" style="background:#fff;border:1px solid #eee;text-align:left" onclick="alert('Electricity - Coming Soon in KOJO PAY')">💡 Pay Electricity</button>
+  <button class="m-btn m-grey" onclick="closeAll()">Close</button>
+</div></div>
+
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script src="app.js"></script>
 </body>
-</html>
+  </html>
