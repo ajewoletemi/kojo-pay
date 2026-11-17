@@ -1,9 +1,30 @@
-// ONLY PUBLIC KEY HERE - From Flutterwave Dashboard > Settings > API Keys > Test Mode
-const FLW_PUBLIC_KEY = "FLWPUBK_TEST-xxxxxxxx-X";
+// KOJO PAY - Frontend
+// Gets FLW_PUBLIC_KEY from backend /api/config (which reads Render Env Var)
+// Never hardcode secret keys here.
+
+let FLW_PUBLIC_KEY = "";
+let BACKEND_URL = ""; // Leave empty if frontend + backend on same domain, or set to your backend URL
+
+// Auto-detect backend URL on Render
+// If you deploy frontend and backend separately, set this:
+if (window.location.hostname.includes('onrender.com')) {
+  // CHANGE THIS to your real backend URL after deploy
+  BACKEND_URL = "https://kojopay-backend.onrender.com";
+}
+
+async function getConfig() {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/config`);
+    const data = await res.json();
+    FLW_PUBLIC_KEY = data.publicKey;
+    console.log("KOJO PAY config loaded");
+  } catch(e) {
+    console.warn("Using fallback - set BACKEND_URL in app.js");
+    FLW_PUBLIC_KEY = "FLWPUBK_TEST-xxxxxxxx-X"; // fallback for local test only
+  }
+}
 
 async function loadDashboard(){
-  // Production: const res = await fetch('/api/balance'); const data = await res.json();
-  // Demo data for preview:
   const data = {
     balance: "262,000.12",
     transactions: [
@@ -21,8 +42,8 @@ async function loadDashboard(){
   `).join('');
 }
 
-function depositWithFlutterwave(){
-  // Opens Flutterwave SECURE checkout - you NEVER collect card numbers
+async function depositWithFlutterwave(){
+  if(!FLW_PUBLIC_KEY) await getConfig();
   FlutterwaveCheckout({
     public_key: FLW_PUBLIC_KEY,
     tx_ref: "kojopay-" + Date.now(),
@@ -31,15 +52,11 @@ function depositWithFlutterwave(){
     payment_options: "card,banktransfer,ussd",
     customer: { email: "user@example.com", name: "Kojo Pay User" },
     callback: function(data){
-      fetch('/api/verify-payment', { method:'POST', body: JSON.stringify({id: data.transaction_id}) })
+      fetch(`${BACKEND_URL}/api/verify-payment`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id: data.transaction_id}) })
       loadDashboard();
       alert("Payment verified");
     },
-    customizations: {
-      title: "KOJO PAY",
-      description: "Wallet Funding",
-      logo: "https://yourdomain.com/logo-gold.png"
-    }
+    customizations: { title: "KOJO PAY", description: "Wallet Funding", logo: "https://yourdomain.com/logo-gold.png" }
   });
 }
 
@@ -48,11 +65,12 @@ function openSend(){
   const account = prompt("Recipient Account Number?");
   const bankCode = prompt("Bank Code? e.g 044 for Access, 058 for GTB");
   if(!amount || !account) return;
-  fetch('/api/send', {
+  fetch(`${BACKEND_URL}/api/send`, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({amount, account, bankCode})
   }).then(()=> loadDashboard());
 }
 
-loadDashboard();
+// Init
+getConfig().then(()=> loadDashboard());
