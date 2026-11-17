@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KOJO PAY - Login</title>
 <style>
-  :root{ --black:#0B0B0B; --white:#FFFFFF; --gold:#C9A227; --gold-light:#F5E9B8; --grey:#F4F4F2; --text-grey:#6B6B6B; }
+  :root{ --black:#0B0B0B; --white:#FFFFFF; --gold:#C9A227; --grey:#F4F4F2; --text-grey:#6B6B6B; }
   *{box-sizing:border-box}
   body{font-family:Inter,Arial,sans-serif;background:var(--black);margin:0;color:var(--black);display:flex;justify-content:center;min-height:100vh}
   .wrap{width:100%;max-width:420px;background:var(--white);padding:28px 24px;display:flex;flex-direction:column}
@@ -33,30 +33,18 @@
     <p>One App. One Wallet. Kojo Pay.</p>
     <div class="gold-line"></div>
   </div>
-
   <div class="demo">DEMO — Flutterwave Sandbox — No Real Money</div>
-
   <label>Phone Number / Email</label>
   <input type="text" id="loginEmail" placeholder="e.g. 0803 123 4567 or you@email.com">
-
   <label>Password</label>
   <input type="password" id="loginPass" placeholder="Enter password">
-
   <div class="row"><span>Remember me</span><a href="#">Forgot Password?</a></div>
-
   <button class="btn btn-gold" onclick="login()">Log In</button>
   <button class="btn btn-black" onclick="goSignup()">Create Account</button>
-
-  <div class="footer">
-    KOJO PAY is a financial technology company, not a bank.<br>
-    Banking services provided by [Your Partner Bank], licensed by CBN.<br>
-    © 2026 KOJO PAY
-  </div>
+  <div class="footer">KOJO PAY is a financial technology company, not a bank.<br>Banking services provided by [Your Partner Bank], licensed by CBN.<br>© 2026 KOJO PAY</div>
 </div>
-
 <script>
 function login(){
-  // Demo only - In production, verify via YOUR backend, not frontend
   const email = document.getElementById('loginEmail').value;
   if(!email){ alert('Enter email / phone'); return; }
   localStorage.setItem('kojo_user', email);
