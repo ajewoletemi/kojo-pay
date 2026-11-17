@@ -44,10 +44,7 @@
 </head>
 <body>
 <div class="demo">DEMO — Connected to Flutterwave Sandbox — No Real Money</div>
-<div class="topbar">
-  <b>KOJO <span>PAY</span></b>
-  <div class="user">Hi, User 👋<br><small style="opacity:.6">Verify Identity</small></div>
-</div>
+<div class="topbar"><b>KOJO <span>PAY</span></b><div class="user">Hi, User 👋<br><small style="opacity:.6">Verify Identity</small></div></div>
 <div class="wrap">
   <div class="wallet-card">
     <div class="wallet-label">TOTAL BALANCE • NGN WALLET</div>
@@ -59,29 +56,18 @@
       <button class="btn btn-outline" onclick="loadDashboard()">↻</button>
     </div>
   </div>
-
   <div class="quick-grid">
     <div class="quick" onclick="openSend()"><div>↗</div>Send<small>To Bank</small></div>
     <div class="quick" onclick="depositWithFlutterwave()"><div>↓</div>Deposit<small>Fund Wallet</small></div>
     <div class="quick" onclick="alert('Airtime - via Flutterwave Bill Payment API')"><div>📱</div>Airtime<small>Buy Airtime</small></div>
     <div class="quick" onclick="alert('More services via Flutterwave')"><div>•••</div>More<small>Services</small></div>
   </div>
-
-  <div class="card">
-    <h3>Account History <a href="#">See all</a></h3>
-    <div id="history">Loading...</div>
-  </div>
-
+  <div class="card"><h3>Account History <a href="#">See all</a></h3><div id="history">Loading...</div></div>
   <div class="card" style="display:flex;justify-content:space-between;align-items:center">
     <div><b>Invite & Earn</b><br><span style="font-size:12px;color:#6B6B6B">Share your code: KOJO123</span></div>
     <span class="badge">GOLD MEMBER</span>
   </div>
-
-  <div class="footer">
-    KOJO PAY is a financial technology company, not a bank.<br>
-    Banking services provided by [Your Partner Bank], licensed by CBN.<br>
-    © 2026 KOJO PAY
-  </div>
+  <div class="footer">KOJO PAY is a financial technology company, not a bank.<br>Banking services provided by [Your Partner Bank], licensed by CBN.<br>© 2026 KOJO PAY</div>
 </div>
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script src="app.js"></script>
